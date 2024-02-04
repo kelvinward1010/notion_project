@@ -1,0 +1,34 @@
+.container{
+    height: 100vh;
+    border-right: 1px solid teal;
+
+    .sidebar{
+        height: 100%;
+        width: 180px;
+        overflow-y: auto;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+
+        .icon_left{
+            position: absolute;
+            top: 3px;
+            right: 2px;
+            width: fit-content;
+            cursor: pointer;
+        }
+
+        .icon_left:hover{
+            background: teal;
+            color: white;
+            border-radius: 3px;
+        }
+    }
+
+    .change_style{
+        position: absolute;
+        top: 0;
+        left: 180px;
+        width: calc(100% - 180px);
+    }
+}
