@@ -3,6 +3,7 @@ import styles from './style.module.scss';
 import { IconChevronsLeft, IconMenu2 } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
 import { useParams } from 'react-router-dom';
+import { User } from '../user/User';
 
 export function Navigation() {
 
@@ -73,7 +74,9 @@ export function Navigation() {
                 <div onClick={collapse} role='button' className={styles.icon_left}>
                     <IconChevronsLeft />
                 </div>
-                Actions
+                <div>
+                    <User />
+                </div>
             </aside>
             <div 
                 ref={navbarRef}

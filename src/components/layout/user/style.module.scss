@@ -1,0 +1,14 @@
+.avatar_group{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    cursor: pointer;
+
+    .name{
+        margin-left: 10px;
+        width: 100px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+}
