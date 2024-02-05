@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Documents, Landing, Preview } from "./modules";
-import { documentsUrl, landingUrl, previewUrl } from "./urls";
+import { documentIdUrl, documentsUrl, landingUrl, previewUrl } from "./urls";
 import { Layout } from "./components";
 
 
@@ -23,7 +23,7 @@ export const routerConfig = createBrowserRouter([
                 element: <Preview />,
             },
             {
-                path: documentsUrl,
+                path: documentIdUrl,
                 element: <Documents />
             }
         ]

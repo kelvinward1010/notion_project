@@ -1,9 +1,11 @@
 import { ElementRef, useEffect, useRef, useState } from 'react';
 import styles from './style.module.scss';
-import { IconChevronsLeft, IconMenu2 } from '@tabler/icons-react';
+import { IconChevronsLeft, IconFile, IconMenu2 } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
 import { useParams } from 'react-router-dom';
 import { User } from '../user/User';
+import { Item } from '../item/Item';
+import { DocumentList } from '../document_list/DocumentList';
 
 export function Navigation() {
 
@@ -14,6 +16,7 @@ export function Navigation() {
     const navbarRef = useRef<ElementRef<"div">>(null);
     const [,setIsResetting] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(isMobile);
+    const [data, setData] = useState<Array<any>>([]);
 
 
     const resetWidth = () => {
@@ -60,6 +63,32 @@ export function Navigation() {
         }
     }, [pathname, isMobile]);
 
+    const handleCreate = () => {
+        let initialData = {
+            id: Math.random().toString(),
+            title: 'United',
+            level: 0,
+            parent: '',
+        }
+        setData(prevData => [...prevData, initialData])
+    }
+
+    const handleCreateInId = (lv?: number, idParent?: string) => {
+        let initialData = {
+            id: Math.random().toString(),
+            title: 'United',
+            level: Number(Number(lv) + 1),
+            parent: idParent,
+        }
+        setData(prevData => [...prevData, initialData])
+    }
+
+    const hanldeDeleteItem = (id: string) => {
+        setData(prevData => prevData.filter(item => item?.id !== id));
+    };
+    
+    
+
     return (
         <div className={styles.container}>
             <aside
@@ -77,10 +106,39 @@ export function Navigation() {
                 <div>
                     <User />
                 </div>
+                <div className={styles.document_list}>
+                    <Item 
+                        onCreateInID={handleCreateInId}
+                        label='Create Page'
+                        icon={<IconFile size={16}/>}
+                        onClick={handleCreate}
+                        onDelete={hanldeDeleteItem}
+                    />
+                    <div style={{borderTop: '1px solid teal'}}/>
+                    {data?.map((item) => (
+                        <Item 
+                            key={item.id}
+                            id={item.id}
+                            label={item.title}
+                            level={item.level}
+                            icon={<IconFile size={16}/>}
+                            onCreateInID={handleCreateInId}
+                            onDelete={hanldeDeleteItem}
+                        />
+                    ))}
+                    <DocumentList 
+                        data={data}
+                    />
+                </div>
             </aside>
             <div 
                 ref={navbarRef}
                 className={styles.change_style}
+                style={{
+                    transition: 'all',
+                    transitionTimingFunction: 'ease-in-out',
+                    transitionDuration: '300ms',
+                }}
             >
                 <nav className={styles.nav}>
                     {isCollapsed && <IconMenu2 style={{cursor: 'pointer'}} onClick={resetWidth} role="button"/>}
