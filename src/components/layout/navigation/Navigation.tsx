@@ -1,6 +1,6 @@
 import { ElementRef, useEffect, useRef, useState } from 'react';
 import styles from './style.module.scss';
-import { IconChevronsLeft, IconFile, IconMenu2 } from '@tabler/icons-react';
+import { IconChevronsLeft, IconMenu2 } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
 import { useParams } from 'react-router-dom';
 import { User } from '../user/User';
