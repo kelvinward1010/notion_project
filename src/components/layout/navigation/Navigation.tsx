@@ -1,11 +1,12 @@
 import { ElementRef, useEffect, useRef, useState } from 'react';
 import styles from './style.module.scss';
-import { IconChevronsLeft, IconMenu2 } from '@tabler/icons-react';
+import { IconChevronsLeft, IconMenu2, IconMoon, IconSun } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
 import { useParams } from 'react-router-dom';
 import { User } from '../user/User';
 import { DocumentList } from '../document_list/DocumentList';
 import { CreatePage } from '../createpage/CreatePage';
+import { ActionIcon, useMantineColorScheme } from '@mantine/core';
 
 
 const defaultData = [
@@ -39,6 +40,11 @@ export function Navigation() {
     const [,setIsResetting] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(isMobile);
     const [data, setData] = useState<Array<any>>(defaultData);
+    const { colorScheme, setColorScheme } = useMantineColorScheme();
+
+    const toggleColorScheme = () => {
+        setColorScheme(colorScheme === 'dark' ? 'light' : 'dark');
+    };
 
     const resetWidth = () => {
         if (sidebarRef.current && navbarRef.current) {
@@ -97,7 +103,7 @@ export function Navigation() {
     const handleCreateInId = (lv?: number, idParent?: string) => {
         let initialData = {
             id: Math.random().toString(),
-            title: 'United',
+            title: `United`,
             level: Number(Number(lv) + 1),
             parent: idParent,
         }
@@ -133,6 +139,18 @@ export function Navigation() {
                         onCreateInID={handleCreateInId}
                         onDelete={hanldeDeleteItem}
                     />
+                    <div className={styles.action_footer}>
+                        <ActionIcon
+                            variant="default"
+                            size={35}
+                            onClick={toggleColorScheme}
+                        >
+                            {colorScheme == 'dark'
+                                ? <IconSun />
+                                : <IconMoon />
+                            }
+                        </ActionIcon >
+                    </div>
                 </div>
             </aside>
             <div 
