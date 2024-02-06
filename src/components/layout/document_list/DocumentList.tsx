@@ -1,27 +1,44 @@
+import { IconFile } from '@tabler/icons-react';
+import { createTree } from '../../../oplossing';
+import { Item } from '../item/Item';
 import styles from './style.module.scss';
 
 interface DocumentListProps {
-    parentDocumentId?:  string;
-    level?: number;
-    data?: Array<any>;
+    data: Array<any>;
+    icon: any;
+    onExpand?: () => void;
+    onClick?: () => void;
+    onCreateInID: (lv: number, idParent: string) => void;
+    onDelete: (id: string) => void;
+    setData?: any;
 }
 
 export const DocumentList: React.FC<DocumentListProps> = ({
-    parentDocumentId,
-    level = 0,
     data,
+    icon,
+    onExpand,
+    onClick,
+    onCreateInID,
+    onDelete,
 }) => {
 
-    const documents = data?.find(item => item.id == parentDocumentId);
+    const tree = createTree(data);
 
     return (
         <div className={styles.container}>
-            {documents?.map((document: any) => (
-                <div key={document.id}>
-                    <span>{document?.title}</span>
-                    <DocumentList parentDocumentId={document.id} level={level + 1}/>
-                </div>
+            {tree?.map((item) => (
+                <Item
+                    key={item.id}
+                    id={item.id}
+                    title={item.title}
+                    level={item.level}
+                    children={item.children}
+                    icon={<IconFile size={16}/>}
+                    onCreateInID={onCreateInID}
+                    onDelete={onDelete}
+                />
             ))}
+            {/* {tree.map(item => <ItemComponent key={item.id} item={item}/>)} */}
         </div>
     )
 }

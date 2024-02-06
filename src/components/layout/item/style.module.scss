@@ -2,36 +2,49 @@
     min-height: 27px;
     padding: 3px 0;
     padding-right: 9px;
-    display: flex;
-    align-items: center;
     cursor: pointer;
 
-    .expand{
-        margin-top: 3px;
-    }
 
     .for_child{
-        margin-top: 3px;
-        margin-left: auto;
+        width: 100%;
         display: flex;
+        justify-content: space-between;
         align-items: center;
 
-        .plus{
+        .info{
+            display: flex;
+            align-items: center;
+            justify-content: start;
+
+
+            .expand{
+                margin-top: 3px;
+                margin-right: -4px;
+            }
+        }
+
+        .actions{
             margin-left: auto;
-            opacity: 0.4;
-        }
+            display: flex;
+            align-items: center;
 
-        .plus:hover{
-            opacity: 1;
-        }
-
-        .trash{
-            margin-left: auto;
-            opacity: 0.4;
-        }
-
-        .trash:hover{
-            opacity: 1;
+            .plus{
+                margin-left: auto;
+                opacity: 0.4;
+            }
+    
+            .plus:hover{
+                opacity: 1;
+            }
+    
+            .trash{
+                margin-left: auto;
+                opacity: 0.4;
+            }
+    
+            .trash:hover{
+                opacity: 1;
+            }
         }
     }
 }

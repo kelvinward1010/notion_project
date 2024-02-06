@@ -4,8 +4,17 @@ import { IconChevronsLeft, IconFile, IconMenu2 } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
 import { useParams } from 'react-router-dom';
 import { User } from '../user/User';
-import { Item } from '../item/Item';
 import { DocumentList } from '../document_list/DocumentList';
+import { CreatePage } from '../createpage/CreatePage';
+
+
+interface Node {
+    id: string;
+    title: string;
+    level: number;
+    parent: string;
+    children?: Node[];
+}
 
 export function Navigation() {
 
@@ -84,10 +93,24 @@ export function Navigation() {
     }
 
     const hanldeDeleteItem = (id: string) => {
+
         setData(prevData => prevData.filter(item => item?.id !== id));
     };
-    
-    
+
+    function removeNode(data: any[], parentId?: string){
+        let newData: Node[] = [];
+        for (let item of data) {
+            if (item.id !== parentId) {
+                if (item.children) {
+                    item.children = removeNode(item.children, parentId);
+                }
+                newData.push(item);
+            }
+        }
+        setData(newData)
+    }
+
+    console.log(data)
 
     return (
         <div className={styles.container}>
@@ -107,27 +130,13 @@ export function Navigation() {
                     <User />
                 </div>
                 <div className={styles.document_list}>
-                    <Item 
-                        onCreateInID={handleCreateInId}
-                        label='Create Page'
-                        icon={<IconFile size={16}/>}
-                        onClick={handleCreate}
-                        onDelete={hanldeDeleteItem}
-                    />
+                    <CreatePage onClick={handleCreate}/>
                     <div style={{borderTop: '1px solid teal'}}/>
-                    {data?.map((item) => (
-                        <Item 
-                            key={item.id}
-                            id={item.id}
-                            label={item.title}
-                            level={item.level}
-                            icon={<IconFile size={16}/>}
-                            onCreateInID={handleCreateInId}
-                            onDelete={hanldeDeleteItem}
-                        />
-                    ))}
                     <DocumentList 
                         data={data}
+                        icon={<IconFile size={16}/>}
+                        onCreateInID={handleCreateInId}
+                        onDelete={hanldeDeleteItem}
                     />
                 </div>
             </aside>
