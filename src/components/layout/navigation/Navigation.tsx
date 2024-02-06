@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { User } from '../user/User';
 import { DocumentList } from '../document_list/DocumentList';
 import { CreatePage } from '../createpage/CreatePage';
-import { ActionIcon, useMantineColorScheme } from '@mantine/core';
+import { ActionIcon, Text, useMantineColorScheme } from '@mantine/core';
 
 
 const defaultData = [
@@ -150,6 +150,7 @@ export function Navigation() {
                                 : <IconMoon />
                             }
                         </ActionIcon >
+                        {colorScheme == 'light' ? <Text ml={5}>Light</Text>: <Text ml={5}>Dark</Text>}
                     </div>
                 </div>
             </aside>
