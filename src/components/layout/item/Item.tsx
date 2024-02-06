@@ -42,7 +42,7 @@ export const Item: React.FC<ItemProps> = ({
                     <div
                         className={styles.for_child}
                         style={{
-                            marginLeft: `${(Number(level) * 12)}px`
+                            paddingLeft: `${(Number(level) * 12)}px`,
                         }}
                     >
                         <div 

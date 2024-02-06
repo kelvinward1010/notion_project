@@ -16,6 +16,27 @@ interface Node {
     children?: Node[];
 }
 
+const defaultData = [
+    {
+        "id": "0.6489629075787287",
+        "title": "United 1",
+        "level": 0,
+        "parent": "",
+    },
+    {
+        "id": "0.9020505604132987",
+        "title": "United 2",
+        "level": 0,
+        "parent": ""
+    },
+    {
+        "id": "0.5700801393218313",
+        "title": "United 3",
+        "level": 1,
+        "parent": "0.6489629075787287"
+    }
+]
+
 export function Navigation() {
 
     const pathname = useParams();
@@ -25,7 +46,7 @@ export function Navigation() {
     const navbarRef = useRef<ElementRef<"div">>(null);
     const [,setIsResetting] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(isMobile);
-    const [data, setData] = useState<Array<any>>([]);
+    const [data, setData] = useState<Array<any>>(defaultData);
 
 
     const resetWidth = () => {
