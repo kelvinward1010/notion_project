@@ -19,3 +19,28 @@ export function createTree(arr: Item[], parent = ''): Item[] {
        });
     return tree;
 }
+
+
+interface Node {
+    id: string;
+    title: string;
+    level: number;
+    parent: string;
+    children?: Node[];
+}
+
+export function hanldeMapData(data: Node[]): Node[] {
+    const idToNode: { [key: string]: Node } = {};
+    const rootNodes: Node[] = [];
+
+    for (const item of data) {
+        item.children = [];
+        idToNode[item.id] = item;
+        if (item.parent) {
+            idToNode[item?.parent]?.children?.push(item);
+        } else {
+            rootNodes.push(item);
+        }
+    }
+    return rootNodes;
+}

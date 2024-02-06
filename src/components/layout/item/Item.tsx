@@ -1,7 +1,9 @@
-import { IconChevronLeft, IconTrash } from '@tabler/icons-react';
+import { IconChevronDown, IconChevronLeft, IconTrash } from '@tabler/icons-react';
 import styles from './style.module.scss';
 import { Text } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 interface ItemProps {
     id?: string;
@@ -24,6 +26,13 @@ export const Item: React.FC<ItemProps> = ({
     onCreateInID,
     onDelete,
 }) => {
+
+    const navigate = useNavigate();
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleNode = () => {
+        setIsOpen(!isOpen);
+    };
 
     const handleExpand = (
         event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -54,11 +63,16 @@ export const Item: React.FC<ItemProps> = ({
                                     onClick={handleExpand}
                                     role='buttton'
                                 >
-                                    <IconChevronLeft size={16} />
+                                    {isOpen === true ? <IconChevronDown size={16} /> : <IconChevronLeft size={16} />}
                                 </div>
                             )}
                             {icon}
-                            <Text size={'sm'}>
+                            <Text onClick={() => {
+                                if(!children){
+                                    navigate(`/documents/${id}`)
+                                }
+                                toggleNode()
+                            }} size={'sm'}>
                                 {title}
                             </Text>
                         </div>
@@ -66,7 +80,10 @@ export const Item: React.FC<ItemProps> = ({
                             <div
                                 className={styles.plus}
                                 role='buttton'
-                                onClick={() => onCreateInID(Number(level), String(id))}
+                                onClick={() => {
+                                    onCreateInID(Number(level), String(id))
+                                    setIsOpen(true)
+                                }}
                             >
                                 <IconPlus size={16} />
                             </div>
@@ -80,7 +97,7 @@ export const Item: React.FC<ItemProps> = ({
                         </div>
                     </div>
                 )}
-                {children && children?.map(child => <Item 
+                {isOpen && children && children?.map(child => <Item 
                                                         onCreateInID={onCreateInID} 
                                                         onDelete={onDelete} 
                                                         children={child.children} 

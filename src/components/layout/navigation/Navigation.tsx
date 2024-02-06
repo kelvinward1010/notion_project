@@ -8,14 +8,6 @@ import { DocumentList } from '../document_list/DocumentList';
 import { CreatePage } from '../createpage/CreatePage';
 
 
-interface Node {
-    id: string;
-    title: string;
-    level: number;
-    parent: string;
-    children?: Node[];
-}
-
 const defaultData = [
     {
         "id": "0.6489629075787287",
@@ -48,20 +40,19 @@ export function Navigation() {
     const [isCollapsed, setIsCollapsed] = useState(isMobile);
     const [data, setData] = useState<Array<any>>(defaultData);
 
-
     const resetWidth = () => {
         if (sidebarRef.current && navbarRef.current) {
             setIsCollapsed(false);
             setIsResetting(true);
 
-            sidebarRef.current.style.width = isMobile ? "100%" : "180px";
+            sidebarRef.current.style.width = isMobile ? "100%" : "200px";
             navbarRef.current.style.setProperty(
                 "width",
-                isMobile ? "0" : "calc(100% - 180px)"
+                isMobile ? "0" : "calc(100% - 200px)"
             );
             navbarRef.current.style.setProperty(
                 "left",
-                isMobile ? "100%" : "180px"
+                isMobile ? "100%" : "200px"
             );
             setTimeout(() => setIsResetting(false), 300);
         }
@@ -114,24 +105,8 @@ export function Navigation() {
     }
 
     const hanldeDeleteItem = (id: string) => {
-
         setData(prevData => prevData.filter(item => item?.id !== id));
     };
-
-    function removeNode(data: any[], parentId?: string){
-        let newData: Node[] = [];
-        for (let item of data) {
-            if (item.id !== parentId) {
-                if (item.children) {
-                    item.children = removeNode(item.children, parentId);
-                }
-                newData.push(item);
-            }
-        }
-        setData(newData)
-    }
-
-    console.log(data)
 
     return (
         <div className={styles.container}>
@@ -155,7 +130,6 @@ export function Navigation() {
                     <div style={{borderTop: '1px solid teal'}}/>
                     <DocumentList 
                         data={data}
-                        icon={<IconFile size={16}/>}
                         onCreateInID={handleCreateInId}
                         onDelete={hanldeDeleteItem}
                     />

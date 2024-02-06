@@ -5,7 +5,6 @@ import styles from './style.module.scss';
 
 interface DocumentListProps {
     data: Array<any>;
-    icon: any;
     onExpand?: () => void;
     onClick?: () => void;
     onCreateInID: (lv: number, idParent: string) => void;
@@ -15,9 +14,6 @@ interface DocumentListProps {
 
 export const DocumentList: React.FC<DocumentListProps> = ({
     data,
-    icon,
-    onExpand,
-    onClick,
     onCreateInID,
     onDelete,
 }) => {
