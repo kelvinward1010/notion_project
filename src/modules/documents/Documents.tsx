@@ -56,6 +56,11 @@ export function Documents() {
                             <RichTextEditor.ControlsGroup>
                                 <RichTextEditor.Bold />
                                 <RichTextEditor.Italic />
+                                <RichTextEditor.Underline />
+                                <RichTextEditor.Strikethrough />
+                                <RichTextEditor.ClearFormatting />
+                                <RichTextEditor.Highlight />
+                                <RichTextEditor.Code />
                                 <RichTextEditor.Link />
                             </RichTextEditor.ControlsGroup>
                         </BubbleMenu>

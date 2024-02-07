@@ -1,0 +1,13 @@
+.container{
+
+    .auth_other{
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    .auth_other:hover{
+        background: gainsboro;
+        color: teal;
+    }
+}

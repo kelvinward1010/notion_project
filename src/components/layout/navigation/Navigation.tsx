@@ -128,9 +128,7 @@ export function Navigation() {
                 <div onClick={collapse} role='button' className={styles.icon_left}>
                     <IconChevronsLeft />
                 </div>
-                <div>
-                    <User />
-                </div>
+                <User />
                 <div className={styles.document_list}>
                     <CreatePage onClick={handleCreate}/>
                     <div style={{borderTop: '1px solid teal'}}/>
