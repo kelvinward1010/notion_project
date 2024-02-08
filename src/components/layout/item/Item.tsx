@@ -3,17 +3,18 @@ import styles from './style.module.scss';
 import { Text } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useAuth } from '../../../context/authContext';
+import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore';
+import { database } from '../../../lib/firebase';
 
 interface ItemProps {
-    id?: string;
+    id: string;
     title: string;
     level?: number;
     children?: Item[];
     icon: any;
     onExpand?: () => void;
-    onCreateInID: (lv: number, idParent: string) => void;
-    onDelete: (id: string) => void;
 }
 
 export const Item: React.FC<ItemProps> = ({
@@ -23,10 +24,9 @@ export const Item: React.FC<ItemProps> = ({
     children,
     icon,
     onExpand,
-    onCreateInID,
-    onDelete,
 }) => {
 
+    const user = useAuth();
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
 
@@ -40,6 +40,25 @@ export const Item: React.FC<ItemProps> = ({
         event.stopPropagation();
         onExpand?.();
     };
+
+
+    const handleCreateNewFolder = useCallback(async () => {
+
+        const defaultData = {
+            title: "United",
+            content: "New content",
+            level: Number(level) + 1,
+            parent: id,
+        }
+
+        const userCollectionRef = collection(database, "folders", user?.uid, "data");
+        await addDoc(userCollectionRef, defaultData);
+    },[level, id])
+
+    const hanldeDelete = useCallback(async () => {
+        const docRef = doc(database, "folders", user?.uid, "data", id);
+        await deleteDoc(docRef);
+    },[id, user?.id, database])
     
     return (
         <>
@@ -81,7 +100,7 @@ export const Item: React.FC<ItemProps> = ({
                                 className={styles.plus}
                                 role='buttton'
                                 onClick={() => {
-                                    onCreateInID(Number(level), String(id))
+                                    handleCreateNewFolder()
                                     setIsOpen(true)
                                 }}
                             >
@@ -90,7 +109,7 @@ export const Item: React.FC<ItemProps> = ({
                             <div
                                 className={styles.trash}
                                 role='buttton'
-                                onClick={() => onDelete(String(id))}
+                                onClick={() => hanldeDelete()}
                             >
                                 <IconTrash size={16} />
                             </div>
@@ -98,8 +117,6 @@ export const Item: React.FC<ItemProps> = ({
                     </div>
                 )}
                 {isOpen && children && children?.map(child => <Item 
-                                                        onCreateInID={onCreateInID} 
-                                                        onDelete={onDelete} 
                                                         children={child.children} 
                                                         id={child.id} 
                                                         key={child.id} 

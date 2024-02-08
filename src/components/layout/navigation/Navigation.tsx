@@ -7,28 +7,9 @@ import { User } from '../user/User';
 import { DocumentList } from '../document_list/DocumentList';
 import { CreatePage } from '../createpage/CreatePage';
 import { ActionIcon, Text, useMantineColorScheme } from '@mantine/core';
-
-
-const defaultData = [
-    {
-        "id": "0.6489629075787287",
-        "title": "United 1",
-        "level": 0,
-        "parent": "",
-    },
-    {
-        "id": "0.9020505604132987",
-        "title": "United 2",
-        "level": 0,
-        "parent": ""
-    },
-    {
-        "id": "0.5700801393218313",
-        "title": "United 3",
-        "level": 1,
-        "parent": "0.6489629075787287"
-    }
-]
+import { useAuth } from '../../../context/authContext';
+import { collection, onSnapshot } from 'firebase/firestore';
+import { database } from '../../../lib/firebase';
 
 export function Navigation() {
 
@@ -39,8 +20,9 @@ export function Navigation() {
     const navbarRef = useRef<ElementRef<"div">>(null);
     const [,setIsResetting] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(isMobile);
-    const [data, setData] = useState<Array<any>>(defaultData);
-    const { colorScheme, setColorScheme } = useMantineColorScheme();
+    const {colorScheme, setColorScheme } = useMantineColorScheme();
+    const user = useAuth();
+    const [dataList, setDataList] = useState<any[]>([]);
 
     const toggleColorScheme = () => {
         setColorScheme(colorScheme === 'dark' ? 'light' : 'dark');
@@ -90,30 +72,23 @@ export function Navigation() {
         }
     }, [pathname, isMobile]);
 
-    const handleCreate = () => {
-        let initialData = {
-            id: Math.random().toString(),
-            title: 'United',
-            level: 0,
-            parent: '',
+    useEffect(() => {
+        const getCollectionData = async () => {
+            if (user?.uid) {
+                const userCollectionRef = collection(database, "folders", user?.uid, "data");
+                const unsubscribe = onSnapshot(userCollectionRef, (snapshot) => {
+                    const newDataList = snapshot.docs.map((doc) => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+                    setDataList(newDataList);
+                });
+                return () => unsubscribe();
+            }
         }
-        setData(prevData => [...prevData, initialData])
-    }
-
-    const handleCreateInId = (lv?: number, idParent?: string) => {
-        let initialData = {
-            id: Math.random().toString(),
-            title: `United`,
-            level: Number(Number(lv) + 1),
-            parent: idParent,
-        }
-        setData(prevData => [...prevData, initialData])
-    }
-
-    const hanldeDeleteItem = (id: string) => {
-        setData(prevData => prevData.filter(item => item?.id !== id));
-    };
-
+        getCollectionData();
+    }, [user?.uid]);
+    
     return (
         <div className={styles.container}>
             <aside
@@ -130,12 +105,10 @@ export function Navigation() {
                 </div>
                 <User />
                 <div className={styles.document_list}>
-                    <CreatePage onClick={handleCreate}/>
+                    <CreatePage />
                     <div style={{borderTop: '1px solid teal'}}/>
                     <DocumentList 
-                        data={data}
-                        onCreateInID={handleCreateInId}
-                        onDelete={hanldeDeleteItem}
+                        data={dataList}
                     />
                     <div className={styles.action_footer}>
                         <ActionIcon

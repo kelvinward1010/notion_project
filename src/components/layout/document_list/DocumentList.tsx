@@ -7,15 +7,11 @@ interface DocumentListProps {
     data: Array<any>;
     onExpand?: () => void;
     onClick?: () => void;
-    onCreateInID: (lv: number, idParent: string) => void;
-    onDelete: (id: string) => void;
     setData?: any;
 }
 
 export const DocumentList: React.FC<DocumentListProps> = ({
     data,
-    onCreateInID,
-    onDelete,
 }) => {
 
     const tree = createTree(data);
@@ -30,11 +26,8 @@ export const DocumentList: React.FC<DocumentListProps> = ({
                     level={item.level}
                     children={item.children}
                     icon={<IconFile size={16}/>}
-                    onCreateInID={onCreateInID}
-                    onDelete={onDelete}
                 />
             ))}
-            {/* {tree.map(item => <ItemComponent key={item.id} item={item}/>)} */}
         </div>
     )
 }

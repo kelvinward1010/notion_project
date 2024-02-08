@@ -12,6 +12,12 @@ import { Color } from '@tiptap/extension-color';
 import TextStyle from '@tiptap/extension-text-style';
 import { Title } from '@mantine/core';
 import { IconStar } from '@tabler/icons-react';
+import { database } from '../../lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import { useParams } from 'react-router-dom';
+import { useAuth } from '../../context/authContext';
+import { useEffect, useState } from 'react';
+import { User } from 'firebase/auth';
 
 function InsertStarControl() {
     const { editor } = useRichTextEditorContext();
@@ -28,7 +34,25 @@ function InsertStarControl() {
 
 export function Documents() {
 
-    const content = '';
+    const user: User = useAuth();
+    const idParam: any = useParams().id;
+    const [data, setData] = useState<any>();
+
+    const content = data?.content;
+
+    useEffect(() => {
+        const getDocumentData = async () => {
+            if (user?.uid && idParam) {
+                const docRef = doc(database, "folders", user?.uid, "data", idParam);
+                const docSnap = await getDoc(docRef);
+    
+                if (docSnap.exists()) {
+                    setData(docSnap.data());
+                }
+            }
+        }
+        getDocumentData();
+    },[user?.uid, idParam, database])
 
     const editor = useEditor({
         extensions: [
@@ -44,11 +68,11 @@ export function Documents() {
             Color,
         ],
         content,
-    });
-
+    },[data?.content]);
+    
     return (
         <div className={styles.container}>
-            <Title order={2} m={'lg'}>This is a place to write the title!</Title>
+            <Title order={2} m={'lg'}>{data?.title}! - level: {data?.level}</Title>
             <div>
                 <RichTextEditor editor={editor}>
                     {editor && (
