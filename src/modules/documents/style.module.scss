@@ -2,4 +2,20 @@
     width: 100%;
     height: 100%;
     margin-top: 30px;
+
+    .header_doc{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .form_title{
+            display: flex;
+            align-items: center;
+        }
+
+        .title_form{
+            display: flex;
+            align-items: center;
+        }
+    }
 }

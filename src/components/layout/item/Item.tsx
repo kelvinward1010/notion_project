@@ -1,12 +1,14 @@
-import { IconChevronDown, IconChevronLeft, IconTrash } from '@tabler/icons-react';
+import { IconCheck, IconChevronDown, IconChevronLeft, IconFaceIdError, IconTrash } from '@tabler/icons-react';
 import styles from './style.module.scss';
-import { Text } from '@mantine/core';
+import { Text, rem } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import { useAuth } from '../../../context/authContext';
 import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore';
 import { database } from '../../../lib/firebase';
+import { notifications } from '@mantine/notifications';
+import { previewUrl } from '../../../urls';
 
 interface ItemProps {
     id: string;
@@ -56,9 +58,24 @@ export const Item: React.FC<ItemProps> = ({
     },[level, id])
 
     const hanldeDelete = useCallback(async () => {
-        const docRef = doc(database, "folders", user?.uid, "data", id);
-        await deleteDoc(docRef);
-    },[id, user?.id, database])
+        if(id && user?.uid){
+            const docRef = doc(database, "folders", user?.uid, "data", id);
+            await deleteDoc(docRef);
+            notifications.show({
+                title: 'Successfully deleted',
+                message: 'Your data has been deleted successfully in the database',
+                icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+            })
+            navigate(previewUrl)
+        }else{
+            notifications.show({
+                color: 'red',
+                title: 'Error deleting',
+                message: 'Something went wrong! Please try again',
+                icon: <IconFaceIdError style={{ width: rem(18), height: rem(18) }} />,
+            })
+        }
+    },[id, user?.uid, database])
     
     return (
         <>

@@ -1,5 +1,6 @@
 import styles from './style.module.scss';
 import { RichTextEditor, Link, useRichTextEditorContext } from '@mantine/tiptap';
+import { useForm } from '@mantine/form';
 import { BubbleMenu, useEditor } from '@tiptap/react';
 import Highlight from '@tiptap/extension-highlight';
 import StarterKit from '@tiptap/starter-kit';
@@ -10,14 +11,16 @@ import SubScript from '@tiptap/extension-subscript';
 import Placeholder from '@tiptap/extension-placeholder';
 import { Color } from '@tiptap/extension-color';
 import TextStyle from '@tiptap/extension-text-style';
-import { Title } from '@mantine/core';
-import { IconStar } from '@tabler/icons-react';
+import { Button, Group, TextInput, Title, rem } from '@mantine/core';
+import { IconCheck, IconDeviceFloppy, IconEdit, IconFaceIdError, IconStar } from '@tabler/icons-react';
 import { database } from '../../lib/firebase';
-import { doc, getDoc } from 'firebase/firestore';
-import { useParams } from 'react-router-dom';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
+import { notifications } from '@mantine/notifications';
+import { previewUrl } from '../../urls';
 
 function InsertStarControl() {
     const { editor } = useRichTextEditorContext();
@@ -34,11 +37,29 @@ function InsertStarControl() {
 
 export function Documents() {
 
+    const navigate = useNavigate();
     const user: User = useAuth();
     const idParam: any = useParams().id;
     const [data, setData] = useState<any>();
-
+    const [cnt, setCnt] = useState<any>();
+    const [isEditTitle, setIsEditTitle] = useState(false);
+    const [title, setTitle] = useState<string>();
     const content = data?.content;
+
+    const form = useForm({
+        initialValues: {
+            title: data?.title,
+        },
+        validate: {
+            title: (value) => (value.length <= 0 ? 'Name must have at least 1 letters' : null),
+        },
+    });
+
+    useEffect(() => {
+        if (data?.title) {
+            form.setValues({ title: data?.title });
+        }
+    }, [data?.title]);
 
     useEffect(() => {
         const getDocumentData = async () => {
@@ -48,11 +69,14 @@ export function Documents() {
     
                 if (docSnap.exists()) {
                     setData(docSnap.data());
+                    setTitle(docSnap.data()?.title)
+                }else{
+                    navigate(previewUrl)
                 }
             }
         }
         getDocumentData();
-    },[user?.uid, idParam, database])
+    },[user?.uid, idParam, database, navigate])
 
     const editor = useEditor({
         extensions: [
@@ -69,10 +93,111 @@ export function Documents() {
         ],
         content,
     },[data?.content]);
+
+    useEffect(() => {
+        if (!editor) {
+          return;
+        }
+    
+        const handleUpdate = () => {
+          setCnt(editor.getHTML())
+        };
+    
+        editor.on('update', handleUpdate);
+    
+        return () => {
+          editor.off('update', handleUpdate);
+        };
+    }, [editor]);
+    
+    const updateDocumentData = useCallback(async () => {
+    
+        const initialData = {
+            content: cnt,
+        }
+
+        if (user?.uid && idParam) {
+            const docRef = doc(database, "folders", user?.uid, "data", idParam);
+            if (cnt !== undefined) {
+                await updateDoc(docRef, initialData);
+                notifications.show({
+                    title: 'Successfully updated',
+                    message: 'Your data has been saved successfully in the database',
+                    icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+                })
+            } else {
+                notifications.show({
+                    color: 'red',
+                    title: 'Error updating',
+                    message: 'Your data is undefined!',
+                    icon: <IconFaceIdError style={{ width: rem(18), height: rem(18) }} />,
+                })
+            }
+        }
+    },[user?.uid, idParam, cnt])
+    
+    const handleUpdateTitle = useCallback(async () => {
+    
+        const initialData = {
+            title: form.getTransformedValues().title,
+        }
+
+        if (user?.uid && idParam) {
+            const docRef = doc(database, "folders", user?.uid, "data", idParam);
+            if (initialData.title !== undefined) {
+                await updateDoc(docRef, initialData);
+                notifications.show({
+                    title: 'Successfully updated',
+                    message: 'Your data has been saved successfully in the database',
+                    icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+                })
+                setTitle(initialData?.title)
+                setIsEditTitle(!isEditTitle)
+            } else {
+                notifications.show({
+                    color: 'red',
+                    title: 'Error updating',
+                    message: 'Your data is undefined!',
+                    icon: <IconFaceIdError style={{ width: rem(18), height: rem(18) }} />,
+                })
+            }
+        }
+    },[user?.uid, idParam, form])
     
     return (
         <div className={styles.container}>
-            <Title order={2} m={'lg'}>{data?.title}! - level: {data?.level}</Title>
+            <div className={styles.header_doc}>
+                {isEditTitle ? (
+                    <div>
+                        <form className={styles.form_title}>
+                            <TextInput
+                                withAsterisk
+                                placeholder="Your title"
+                                {...form.getInputProps('title')}
+                                m={'lg'}
+                            />
+                            <Group gap={5}>
+                                <Button onClick={handleUpdateTitle} leftSection={<IconDeviceFloppy size={14} />} variant="default">
+                                    Save title
+                                </Button>
+                                <Button onClick={() => setIsEditTitle(!isEditTitle)} variant="default">
+                                    Cancel
+                                </Button>
+                            </Group>
+                        </form>
+                    </div>
+                ): (
+                    <div className={styles.title_form}>
+                        <Title order={2} m={'lg'}>{title} - level: {data?.level}</Title>
+                        <Button m={'lg'} onClick={() => setIsEditTitle(!isEditTitle)} leftSection={<IconEdit size={14} />} variant="default">
+                            Edit title
+                        </Button>
+                    </div>
+                )}
+                <Button m={'lg'} onClick={updateDocumentData} leftSection={<IconDeviceFloppy size={14} />} variant="default">
+                    Save Content
+                </Button>
+            </div>
             <div>
                 <RichTextEditor editor={editor}>
                     {editor && (
