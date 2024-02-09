@@ -188,7 +188,7 @@ export function Documents() {
                     </div>
                 ): (
                     <div className={styles.title_form}>
-                        <Title order={2} m={'lg'}>{title} - level: {data?.level}</Title>
+                        <Title order={2} m={'lg'}>{title}</Title>
                         <Button m={'lg'} onClick={() => setIsEditTitle(!isEditTitle)} leftSection={<IconEdit size={14} />} variant="default">
                             Edit title
                         </Button>
