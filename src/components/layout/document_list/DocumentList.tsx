@@ -1,4 +1,3 @@
-import { IconFile } from '@tabler/icons-react';
 import { createTree } from '../../../oplossing';
 import { Item } from '../item/Item';
 import styles from './style.module.scss';
@@ -25,7 +24,7 @@ export const DocumentList: React.FC<DocumentListProps> = ({
                     title={item.title}
                     level={item.level}
                     children={item.children}
-                    icon={<IconFile size={16}/>}
+                    type={item.type}
                 />
             ))}
         </div>

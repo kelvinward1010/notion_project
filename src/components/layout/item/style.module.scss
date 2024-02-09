@@ -20,7 +20,12 @@
 
             .expand{
                 margin-top: 3px;
-                margin-right: -4px;
+                margin-right: -3px;
+            }
+
+            .expand_file{
+                margin-top: 2px;
+                margin-right: -2px;
             }
         }
 
@@ -32,6 +37,7 @@
             .plus{
                 margin-left: auto;
                 opacity: 0.4;
+                margin-top: 2px;
             }
     
             .plus:hover{
@@ -41,6 +47,7 @@
             .trash{
                 margin-left: auto;
                 opacity: 0.4;
+                margin-top: 2px;
             }
     
             .trash:hover{

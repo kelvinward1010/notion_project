@@ -2,6 +2,7 @@ interface Item {
     id: string;
     title: string;
     level: number;
+    type: string;
     parent: string;
     children?: Item[];
 }
@@ -25,6 +26,7 @@ interface Node {
     id: string;
     title: string;
     level: number;
+    type: string;
     parent: string;
     children?: Node[];
 }

@@ -1,7 +1,6 @@
-import { IconCheck, IconChevronDown, IconChevronLeft, IconFaceIdError, IconTrash } from '@tabler/icons-react';
+import { IconCheck, IconChevronDown, IconChevronLeft, IconFaceIdError, IconFile, IconFilePlus, IconFolderPlus, IconTrash } from '@tabler/icons-react';
 import styles from './style.module.scss';
 import { Text, rem } from '@mantine/core';
-import { IconPlus } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import { useAuth } from '../../../context/authContext';
@@ -15,7 +14,7 @@ interface ItemProps {
     title: string;
     level?: number;
     children?: Item[];
-    icon: any;
+    type?: string
     onExpand?: () => void;
 }
 
@@ -24,7 +23,7 @@ export const Item: React.FC<ItemProps> = ({
     title,
     level,
     children,
-    icon,
+    type,
     onExpand,
 }) => {
 
@@ -44,18 +43,19 @@ export const Item: React.FC<ItemProps> = ({
     };
 
 
-    const handleCreateNewFolder = useCallback(async () => {
+    const handleCreateNewItem = useCallback(async (type: string) => {
 
         const defaultData = {
             title: "United",
             content: "New content",
             level: Number(level) + 1,
+            type: type,
             parent: id,
         }
 
         const userCollectionRef = collection(database, "folders", user?.uid, "data");
         await addDoc(userCollectionRef, defaultData);
-    },[level, id])
+    },[level, id, type])
 
     const hanldeDelete = useCallback(async () => {
         if(id && user?.uid){
@@ -93,7 +93,7 @@ export const Item: React.FC<ItemProps> = ({
                         <div 
                             className={styles.info}
                         >
-                            {!!id && (
+                            {!!id && type =='folder' && (
                                 <div
                                     className={styles.expand}
                                     onClick={handleExpand}
@@ -102,27 +102,52 @@ export const Item: React.FC<ItemProps> = ({
                                     {isOpen === true ? <IconChevronDown size={16} /> : <IconChevronLeft size={16} />}
                                 </div>
                             )}
-                            {icon}
-                            <Text onClick={() => {
-                                if(!children){
-                                    navigate(`/documents/${id}`)
-                                }
-                                toggleNode()
-                            }} size={'sm'}>
+                            {!!id && type == 'file' && (
+                                <div
+                                    className={styles.expand_file}
+                                    onClick={handleExpand}
+                                    role='buttton'
+                                >
+                                    <IconFile size={15} className={styles.icon_file}/>
+                                </div>
+                            )}
+                            <Text 
+                                onClick={() => {
+                                if(!children && type == 'file'){
+                                        navigate(`/documents/${id}`)
+                                    }
+                                    toggleNode()
+                                }} 
+                                size={'sm'}
+                            >
                                 {title}
                             </Text>
                         </div>
                         <div className={styles.actions}>
-                            <div
-                                className={styles.plus}
-                                role='buttton'
-                                onClick={() => {
-                                    handleCreateNewFolder()
-                                    setIsOpen(true)
-                                }}
-                            >
-                                <IconPlus size={16} />
-                            </div>
+                            {!!id && type =='folder' && (
+                                <>
+                                    <div
+                                        className={styles.plus}
+                                        role='buttton'
+                                        onClick={() => {
+                                            handleCreateNewItem('folder')
+                                            setIsOpen(true)
+                                        }}
+                                    >
+                                        <IconFolderPlus size={16} />
+                                    </div>
+                                    <div
+                                        className={styles.plus}
+                                        role='buttton'
+                                        onClick={() => {
+                                            handleCreateNewItem('file')
+                                            setIsOpen(true)
+                                        }}
+                                    >
+                                        <IconFilePlus size={16} />
+                                    </div>
+                                </>
+                            )}
                             <div
                                 className={styles.trash}
                                 role='buttton'
@@ -138,8 +163,8 @@ export const Item: React.FC<ItemProps> = ({
                                                         id={child.id} 
                                                         key={child.id} 
                                                         level={child.level}
-                                                        title={child.title} 
-                                                        icon={icon}
+                                                        title={child.title}
+                                                        type={child.type}
                                                     />
                                             )}
             </div>
@@ -156,6 +181,7 @@ interface Item {
     id: string;
     title: string;
     level: number;
+    type: string;
     parent: string;
     children?: Item[];
 }

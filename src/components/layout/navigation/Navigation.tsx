@@ -33,14 +33,14 @@ export function Navigation() {
             setIsCollapsed(false);
             setIsResetting(true);
 
-            sidebarRef.current.style.width = isMobile ? "100%" : "200px";
+            sidebarRef.current.style.width = isMobile ? "100%" : "210px";
             navbarRef.current.style.setProperty(
                 "width",
-                isMobile ? "0" : "calc(100% - 200px)"
+                isMobile ? "0" : "calc(100% - 210px)"
             );
             navbarRef.current.style.setProperty(
                 "left",
-                isMobile ? "100%" : "200px"
+                isMobile ? "100%" : "210px"
             );
             setTimeout(() => setIsResetting(false), 300);
         }

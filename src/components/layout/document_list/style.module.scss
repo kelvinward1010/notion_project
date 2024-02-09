@@ -1,3 +1,6 @@
 .container{
-    height: calc(100vh - 129px);
+    height: calc(100vh - 140px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-left: 5px;
 }
