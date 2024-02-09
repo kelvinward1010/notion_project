@@ -36,7 +36,7 @@ export function User() {
             <Popover.Target>
                 <Avatar.Group className={styles.avatar_group} onClick={() => setOpened((o) => !o)}>
                     <Avatar radius="xl" src={user?.photoURL}/>
-                    <Text c={'teal.5'} className={styles.name}>{user?.displayName}</Text>
+                    <Text c={'teal.5'} className={styles.name}>{user?.displayName || user?.email}</Text>
                 </Avatar.Group>
             </Popover.Target>
 

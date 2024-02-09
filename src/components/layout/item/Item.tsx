@@ -2,9 +2,9 @@ import { IconCheck, IconChevronDown, IconChevronLeft, IconFaceIdError, IconFile,
 import styles from './style.module.scss';
 import { Text, rem } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../../../context/authContext';
-import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
 import { database } from '../../../lib/firebase';
 import { notifications } from '@mantine/notifications';
 import { previewUrl } from '../../../urls';
@@ -30,6 +30,7 @@ export const Item: React.FC<ItemProps> = ({
     const user = useAuth();
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
+    const [dataList, setDataList] = useState<any[]>([]);
 
     const toggleNode = () => {
         setIsOpen(!isOpen);
@@ -57,10 +58,33 @@ export const Item: React.FC<ItemProps> = ({
         await addDoc(userCollectionRef, defaultData);
     },[level, id, type])
 
+    useEffect(() => {
+        const getCollectionData = async () => {
+            if (user?.uid) {
+                const userCollectionRef = collection(database, "folders", user?.uid, "data");
+                const unsubscribe = onSnapshot(userCollectionRef, (snapshot) => {
+                    const newDataList = snapshot.docs.map((doc) => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+                    setDataList(newDataList);
+                });
+                return () => unsubscribe();
+            }
+        }
+        getCollectionData();
+    }, [user?.uid]);
+
     const hanldeDelete = useCallback(async () => {
         if(id && user?.uid){
+            const childDocs = dataList.filter((doc) => doc.parent === id);
+            for (const childDoc of childDocs) {
+                const docRefChid = doc(database, "folders", user?.uid, "data", childDoc.id);
+                await deleteDoc(docRefChid);
+            }
             const docRef = doc(database, "folders", user?.uid, "data", id);
             await deleteDoc(docRef);
+
             notifications.show({
                 title: 'Successfully deleted',
                 message: 'Your data has been deleted successfully in the database',
@@ -75,8 +99,8 @@ export const Item: React.FC<ItemProps> = ({
                 icon: <IconFaceIdError style={{ width: rem(18), height: rem(18) }} />,
             })
         }
-    },[id, user?.uid, database])
-    
+    },[id, user?.uid, database, dataList])
+
     return (
         <>
             <div

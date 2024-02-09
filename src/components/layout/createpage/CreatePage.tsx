@@ -1,6 +1,6 @@
 import { IconFile, IconFolder } from '@tabler/icons-react';
 import styles from './style.module.scss';
-import { ActionIcon, Group, Text } from '@mantine/core';
+import { ActionIcon, Group, Text, Tooltip } from '@mantine/core';
 import { useAuth } from '../../../context/authContext';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { database } from '../../../lib/firebase';
@@ -30,22 +30,26 @@ export const CreatePage: React.FC = () => {
 
     return (
         <div className={styles.container}>
-            <Text>Create Page</Text>
+            <Text>Tools</Text>
             <Group gap={5}>
-                <ActionIcon                    
-                    variant="default"
-                    size={35}
-                    onClick={() =>handleCreateNewFolder('folder')}
-                >
-                    <IconFolder size={16}/>
-                </ActionIcon>
-                <ActionIcon                    
-                    variant="default"
-                    size={35}
-                    onClick={() => handleCreateNewFolder('file')}
-                >
-                    <IconFile size={16}/>
-                </ActionIcon>
+                <Tooltip label="Folder" openDelay={500} closeDelay={100}>
+                    <ActionIcon                    
+                        variant="default"
+                        size={35}
+                        onClick={() =>handleCreateNewFolder('folder')}
+                    >
+                        <IconFolder size={16}/>
+                    </ActionIcon>
+                </Tooltip>
+                <Tooltip label="File" openDelay={500} closeDelay={100}>
+                    <ActionIcon                    
+                        variant="default"
+                        size={35}
+                        onClick={() => handleCreateNewFolder('file')}
+                    >
+                        <IconFile size={16}/>
+                    </ActionIcon>
+                </Tooltip>
             </Group>
         </div>
     )

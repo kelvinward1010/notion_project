@@ -49,7 +49,7 @@ export function Landing() {
                             <Popover.Target>
                                 <Group className={styles.info} gap={5} onClick={() => setOpened2(!opened2)}>
                                     <Avatar radius="xl" src={user?.photoURL} />
-                                    <Text>{user?.displayName}</Text>
+                                    <Text>{user?.displayName || user?.email}</Text>
                                 </Group>
                             </Popover.Target>
 
