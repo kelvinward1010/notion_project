@@ -1,5 +1,5 @@
 import styles from './style.module.scss';
-import { RichTextEditor, Link, useRichTextEditorContext } from '@mantine/tiptap';
+import { RichTextEditor, Link } from '@mantine/tiptap';
 import { useForm } from '@mantine/form';
 import { BubbleMenu, useEditor } from '@tiptap/react';
 import Highlight from '@tiptap/extension-highlight';
@@ -9,10 +9,15 @@ import TextAlign from '@tiptap/extension-text-align';
 import Superscript from '@tiptap/extension-superscript';
 import SubScript from '@tiptap/extension-subscript';
 import Placeholder from '@tiptap/extension-placeholder';
+import Table from '@tiptap/extension-table'
+import TableRow from '@tiptap/extension-table-row'
+import TableCell from '@tiptap/extension-table-cell'
+import TableHeader from '@tiptap/extension-table-header';
+import Image from '@tiptap/extension-image'
 import { Color } from '@tiptap/extension-color';
 import TextStyle from '@tiptap/extension-text-style';
 import { Button, Group, TextInput, Title, rem } from '@mantine/core';
-import { IconCheck, IconDeviceFloppy, IconEdit, IconFaceIdError, IconStar } from '@tabler/icons-react';
+import { IconCheck, IconDeviceFloppy, IconEdit, IconFaceIdError } from '@tabler/icons-react';
 import { database } from '../../lib/firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -21,19 +26,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
 import { notifications } from '@mantine/notifications';
 import { previewUrl } from '../../urls';
+import {
+    InsertImageControl,
+    InsertStarControl, 
+    InsertTableControl 
+} from '../../plugins';
 
-function InsertStarControl() {
-    const { editor } = useRichTextEditorContext();
-    return (
-        <RichTextEditor.Control
-            onClick={() => editor?.commands.insertContent('⭐')}
-            aria-label="Insert star emoji"
-            title="Insert star emoji"
-        >
-            <IconStar stroke={1.5} size="1rem" />
-        </RichTextEditor.Control>
-    );
-}
 
 export function Documents() {
 
@@ -90,6 +88,11 @@ export function Documents() {
             Placeholder.configure({ placeholder: 'Write your idea!' }),
             TextStyle,
             Color,
+            Table.configure({ resizable: true }),
+            TableRow,
+            TableCell,
+            TableHeader,
+            Image,
         ],
         content,
     },[data?.content]);
@@ -199,7 +202,7 @@ export function Documents() {
                 </Button>
             </div>
             <div>
-                <RichTextEditor editor={editor}>
+                <RichTextEditor mih={200} editor={editor}>
                     {editor && (
                         <BubbleMenu editor={editor}>
                             <RichTextEditor.ControlsGroup>
@@ -254,6 +257,8 @@ export function Documents() {
                         </RichTextEditor.ControlsGroup>
 
                         <InsertStarControl />
+                        <InsertImageControl />
+                        <InsertTableControl />
 
                         <RichTextEditor.ControlsGroup>
                             <RichTextEditor.Blockquote />

@@ -16,3 +16,18 @@
 ::-webkit-scrollbar-thumb:hover {
     background: teal;
 }
+
+/* CSS file */
+table {
+    border: 1px solid white;
+}
+
+.tableWrapper table th,
+.tableWrapper table td {
+    border: 1px solid teal;
+}
+
+.resize-cursor {
+    cursor: ew-resize;
+    cursor: col-resize;
+}

@@ -7,7 +7,7 @@ export function Preview() {
     return (
         <div className={styles.container}>
             <Blockquote color="blue" cite="- Kelvin Ward" icon={icon} mt="xl">
-                Create with your favorite, awesome!
+                Create with your idea, awesome!
             </Blockquote>
         </div>
     )
