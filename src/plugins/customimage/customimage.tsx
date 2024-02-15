@@ -1,8 +1,7 @@
 import { RichTextEditor, useRichTextEditorContext } from "@mantine/tiptap";
 import { useCallback, useState } from "react";
-import styles from './style.module.scss';
 import { IconPhoto } from "@tabler/icons-react";
-import { Box, Button, Group, TextInput, localStorageColorSchemeManager } from "@mantine/core";
+import { Box, Button, Group, Popover, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
 
@@ -12,9 +11,6 @@ export function InsertImageControl() {
 
     const editor  = useRichTextEditorContext();
     const [open, setOpen] = useState(false);
-    const colorSchemeManager = localStorageColorSchemeManager({
-        key: 'mantine-color-scheme-value',
-    }).get('auto');
 
     const form = useForm({
         initialValues: {
@@ -38,12 +34,7 @@ export function InsertImageControl() {
 
     const insertLinkImage = () => {
         return (
-            <div 
-                className={styles.container_image}
-                style={{
-                    background: colorSchemeManager == 'dark' ? "#3B3B3B": "white"
-                }}
-            >
+            <div>
                 <Box maw={340} mx="auto">
                     <TextInput 
                         label="URL image" 
@@ -61,17 +52,21 @@ export function InsertImageControl() {
     return (
         <>
             <RichTextEditor.ControlsGroup>
-                <div>
-                    {open && insertLinkImage()}
-                    <RichTextEditor.Control
-                        aria-label="More table tools"
-                        title="More table tools"
-                        color='white'
-                        onMouseDownCapture={() => setOpen(!open)}
-                    >
-                        <IconPhoto stroke={1.5} size="1rem" />
-                    </RichTextEditor.Control>
-                </div>
+                <Popover width={270} opened={open} position="bottom" clickOutsideEvents={['mouseup', 'touchend']}>
+                    <Popover.Target>
+                        <RichTextEditor.Control
+                            aria-label="More table tools"
+                            title="More table tools"
+                            color='white'
+                            onMouseDownCapture={() => setOpen(!open)}
+                        >
+                            <IconPhoto stroke={1.5} size="1rem" />
+                        </RichTextEditor.Control>
+                    </Popover.Target>
+                    <Popover.Dropdown>
+                        {insertLinkImage()}
+                    </Popover.Dropdown>
+                </Popover>
             </RichTextEditor.ControlsGroup>
         </>
     );

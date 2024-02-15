@@ -1,16 +1,10 @@
 import { RichTextEditor, useRichTextEditorContext } from "@mantine/tiptap";
 import { IconColumnInsertLeft, IconColumnInsertRight, IconColumnRemove, IconRowInsertBottom, IconRowInsertTop, IconRowRemove, IconTable, IconTableOff, IconTableOptions } from "@tabler/icons-react";
-import { useState } from "react";
-import styles from './style.module.scss';
-import { Group, Text, localStorageColorSchemeManager } from "@mantine/core";
+import {  Group, Popover, Text } from "@mantine/core";
 
 
 export function InsertTableControl() {
     const { editor } = useRichTextEditorContext();
-    const [ open, setOpen ] = useState(false);
-    const colorSchemeManager = localStorageColorSchemeManager({
-        key: 'mantine-color-scheme-value',
-    }).get('auto');
 
     const insertTable = () => {
         editor?.chain().insertTable(
@@ -55,12 +49,7 @@ export function InsertTableControl() {
 
     const moreTools = () => {
         return (
-            <div 
-                className={styles.container_tools} 
-                style={{
-                    background: colorSchemeManager == 'dark' ? "#3B3B3B": "white"
-                }}
-            >
+            <div>
                 <Group maw={150} justify={'space-between'}>
                     <Text size="10px">Table: </Text>
                     <RichTextEditor.ControlsGroup>
@@ -140,17 +129,20 @@ export function InsertTableControl() {
                 >
                     <IconTable stroke={1.5} size="1rem" />
                 </RichTextEditor.Control>
-                <div>
-                    {open && moreTools()}
-                    <RichTextEditor.Control
-                        aria-label="More table tools"
-                        title="More table tools"
-                        color='white'
-                        onMouseDownCapture={() => setOpen(!open)}
-                    >
-                        <IconTableOptions stroke={1.5} size="1rem" />
-                    </RichTextEditor.Control>
-                </div>
+                <Popover width={200} position="bottom" clickOutsideEvents={['mouseup', 'touchend']}>
+                    <Popover.Target>
+                        <RichTextEditor.Control
+                            aria-label="More table tools"
+                            title="More table tools"
+                            color='white'
+                        >
+                            <IconTableOptions stroke={1.5} size="1rem" />
+                        </RichTextEditor.Control>
+                    </Popover.Target>
+                    <Popover.Dropdown>
+                        {moreTools()}
+                    </Popover.Dropdown>
+                </Popover>
             </RichTextEditor.ControlsGroup>
         </>
     );
