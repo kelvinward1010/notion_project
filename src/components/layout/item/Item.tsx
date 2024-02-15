@@ -1,13 +1,15 @@
 import { IconCheck, IconChevronDown, IconChevronLeft, IconFaceIdError, IconFile, IconFilePlus, IconFolderPlus, IconTrash } from '@tabler/icons-react';
 import styles from './style.module.scss';
-import { Text, rem } from '@mantine/core';
+import { Text, TextInput, rem } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../../context/authContext';
-import { addDoc, collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { database } from '../../../lib/firebase';
 import { notifications } from '@mantine/notifications';
 import { previewUrl } from '../../../urls';
+import { useOutsideClick } from '../../../hooks/useOutsideClick';
+import { useForm } from '@mantine/form';
 
 interface ItemProps {
     id: string;
@@ -31,6 +33,23 @@ export const Item: React.FC<ItemProps> = ({
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
     const [dataList, setDataList] = useState<any[]>([]);
+    const [isEditTitle, setIsEditTitle] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    const form = useForm({
+        initialValues: {
+            title: title,
+        },
+        validate: {
+            title: (value) => (value.length <= 0 ? 'Name must have at least 1 letters' : null),
+        },
+    });
+
+    useEffect(() => {
+        if (title) {
+            form.setValues({ title: title });
+        }
+    }, [title]);
 
     const toggleNode = () => {
         setIsOpen(!isOpen);
@@ -73,7 +92,7 @@ export const Item: React.FC<ItemProps> = ({
             }
         }
         getCollectionData();
-    }, [user?.uid]);
+    }, [user?.uid, database]);
 
     const hanldeDelete = useCallback(async () => {
         if(id && user?.uid){
@@ -100,6 +119,37 @@ export const Item: React.FC<ItemProps> = ({
             })
         }
     },[id, user?.uid, database, dataList])
+
+    const handleUpdateTitle = useCallback(async () => {
+    
+        const initialData = {
+            title: form.getTransformedValues().title,
+        }
+
+        if (user?.uid && id && title != initialData.title) {
+            const docRef = doc(database, "folders", user?.uid, "data", id);
+            if (initialData.title !== undefined) {
+                await updateDoc(docRef, initialData);
+                notifications.show({
+                    title: 'Successfully updated',
+                    message: 'Your data has been saved successfully in the database',
+                    icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+                })
+            } else {
+                notifications.show({
+                    color: 'red',
+                    title: 'Error updating',
+                    message: 'Your data is undefined!',
+                    icon: <IconFaceIdError style={{ width: rem(18), height: rem(18) }} />,
+                })
+            }
+        }else return;
+    },[user?.uid, id, form])
+
+    useOutsideClick(inputRef, () => {
+        setIsEditTitle(false);
+        handleUpdateTitle();
+    });
 
     return (
         <>
@@ -135,17 +185,38 @@ export const Item: React.FC<ItemProps> = ({
                                     <IconFile size={15} className={styles.icon_file}/>
                                 </div>
                             )}
-                            <Text 
-                                onClick={() => {
-                                if(!children && type == 'file'){
-                                        navigate(`/documents/${id}`)
-                                    }
-                                    toggleNode()
-                                }} 
-                                size={'sm'}
-                            >
-                                {title}
-                            </Text>
+                            {!isEditTitle ? (
+                                <Text 
+                                    onClick={() => {
+                                        if(!children && type == 'file'){
+                                            navigate(`/documents/${id}`)
+                                        }
+                                        toggleNode()
+                                    }} 
+                                    size={'sm'}
+                                    style={{
+                                        whiteSpace: 'nowrap',
+                                        textOverflow: 'ellipsis',
+                                        overflow: 'hidden',
+                                    }}
+                                    maw={100}
+                                    onDoubleClick={() => setIsEditTitle(true)}
+                                >
+                                    {title}
+                                </Text>
+                            ):(
+                                <>
+                                    <TextInput
+                                        ref={inputRef}
+                                        withAsterisk
+                                        placeholder="Your title"
+                                        className={styles.input_edit_title}
+                                        size={'sm'}
+                                        {...form.getInputProps('title')}
+                                        m={'lg'}
+                                    />
+                                </>
+                            )}
                         </div>
                         <div className={styles.actions}>
                             {!!id && type =='folder' && (

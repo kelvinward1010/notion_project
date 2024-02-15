@@ -19,7 +19,7 @@ import TextStyle from '@tiptap/extension-text-style';
 import { Button, Group, TextInput, Title, rem } from '@mantine/core';
 import { IconCheck, IconDeviceFloppy, IconEdit, IconFaceIdError } from '@tabler/icons-react';
 import { database } from '../../lib/firebase';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
 import { useCallback, useEffect, useState } from 'react';
@@ -61,16 +61,29 @@ export function Documents() {
 
     useEffect(() => {
         const getDocumentData = async () => {
+            // if (user?.uid && idParam) {
+            //     const docRef = doc(database, "folders", user?.uid, "data", idParam);
+            //     const docSnap = await getDoc(docRef);
+    
+            //     if (docSnap.exists()) {
+            //         setData(docSnap.data());
+            //         setTitle(docSnap.data()?.title)
+            //     }else{
+            //         navigate(previewUrl)
+            //     }
+            // }
             if (user?.uid && idParam) {
                 const docRef = doc(database, "folders", user?.uid, "data", idParam);
-                const docSnap = await getDoc(docRef);
     
-                if (docSnap.exists()) {
-                    setData(docSnap.data());
-                    setTitle(docSnap.data()?.title)
-                }else{
-                    navigate(previewUrl)
-                }
+                const unsubscribe = onSnapshot(docRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        setData(docSnap.data());
+                        setTitle(docSnap.data()?.title);
+                    } else {
+                        navigate(previewUrl);
+                    }
+                });
+                return unsubscribe;
             }
         }
         getDocumentData();

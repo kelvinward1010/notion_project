@@ -27,6 +27,10 @@ table {
     border: 1px solid teal;
 }
 
+.tableWrapper table th{
+    color: rgb(32, 148, 148);
+}
+
 .resize-cursor {
     cursor: ew-resize;
     cursor: col-resize;
