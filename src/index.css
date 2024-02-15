@@ -35,3 +35,7 @@ table {
     cursor: ew-resize;
     cursor: col-resize;
 }
+
+.mantine-RichTextEditor-content{
+    overflow-x: auto;
+}
