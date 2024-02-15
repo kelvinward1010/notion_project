@@ -31,6 +31,16 @@
             .input_edit_title{
                 height: fit-content;
             }
+
+            .save_title{
+                margin-left: auto;
+                margin-top: 2px;
+                color: teal;
+            }
+
+            .save_title:hover{
+                opacity: 1;
+            }
         }
 
         .actions{

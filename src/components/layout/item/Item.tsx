@@ -1,6 +1,6 @@
-import { IconCheck, IconChevronDown, IconChevronLeft, IconFaceIdError, IconFile, IconFilePlus, IconFolderPlus, IconTrash } from '@tabler/icons-react';
+import { IconCheck, IconChevronDown, IconChevronLeft, IconEdit, IconFaceIdError, IconFile, IconFilePlus, IconFolderPlus, IconTrash } from '@tabler/icons-react';
 import styles from './style.module.scss';
-import { Text, TextInput, rem } from '@mantine/core';
+import { CheckIcon, Text, TextInput, rem } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../../context/authContext';
@@ -35,6 +35,7 @@ export const Item: React.FC<ItemProps> = ({
     const [dataList, setDataList] = useState<any[]>([]);
     const [isEditTitle, setIsEditTitle] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     const form = useForm({
         initialValues: {
@@ -151,6 +152,15 @@ export const Item: React.FC<ItemProps> = ({
         handleUpdateTitle();
     });
 
+    useEffect(() => {
+        const handleResize = () => setWindowWidth(window.innerWidth);
+    
+        window.addEventListener('resize', handleResize);
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     return (
         <>
             <div
@@ -215,11 +225,23 @@ export const Item: React.FC<ItemProps> = ({
                                         {...form.getInputProps('title')}
                                         m={'lg'}
                                     />
+                                    {windowWidth < 555 && (
+                                        <div
+                                            className={styles.save_title}
+                                            role='buttton'
+                                            onClick={() => {
+                                                setIsEditTitle(!isEditTitle)
+                                                handleUpdateTitle();
+                                            }}
+                                        >
+                                            <CheckIcon size={16} />
+                                        </div>
+                                    )}
                                 </>
                             )}
                         </div>
                         <div className={styles.actions}>
-                            {!!id && type =='folder' && (
+                            {!!id && type =='folder' && isEditTitle == false && (
                                 <>
                                     <div
                                         className={styles.plus}
@@ -243,13 +265,26 @@ export const Item: React.FC<ItemProps> = ({
                                     </div>
                                 </>
                             )}
-                            <div
-                                className={styles.trash}
-                                role='buttton'
-                                onClick={() => hanldeDelete()}
-                            >
-                                <IconTrash size={16} />
-                            </div>
+                            {windowWidth < 555 && isEditTitle == false && (
+                                <div
+                                    className={styles.plus}
+                                    role='buttton'
+                                    onClick={() => {
+                                        setIsEditTitle(true)
+                                    }}
+                                >
+                                    <IconEdit size={16} />
+                                </div>
+                            )}
+                            {isEditTitle == false && (
+                                <div
+                                    className={styles.trash}
+                                    role='buttton'
+                                    onClick={() => hanldeDelete()}
+                                >
+                                    <IconTrash size={16} />
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}
