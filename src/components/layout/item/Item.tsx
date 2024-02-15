@@ -208,6 +208,7 @@ export const Item: React.FC<ItemProps> = ({
                                         whiteSpace: 'nowrap',
                                         textOverflow: 'ellipsis',
                                         overflow: 'hidden',
+                                        width: '100%',
                                     }}
                                     maw={100}
                                     onDoubleClick={() => setIsEditTitle(true)}
