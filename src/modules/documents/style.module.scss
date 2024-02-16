@@ -3,6 +3,7 @@
     height: calc(100vh - 30px);
     margin-top: 30px;
     overflow-y: auto;
+    overflow-x: hidden;
 
     .header_doc{
         display: flex;

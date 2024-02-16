@@ -1,8 +1,10 @@
 .container{
     display: flex;
+    overflow: hidden;
 
     .main{
         height: 100%;
         flex: 1;
+        overflow: hidden;
     }
 }
