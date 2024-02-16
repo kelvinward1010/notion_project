@@ -29,6 +29,7 @@ export const Auth: React.FC<AuthProps> = ({
                     message: 'User signed in successfully',
                     icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
                 })
+                close();
             }
         } catch (error) {
             notifications.show({
@@ -84,6 +85,7 @@ export const Auth: React.FC<AuthProps> = ({
                     message: 'Your data has been login successfully',
                     icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
                 })
+                close();
             }
         } catch (error) {
             notifications.show({
