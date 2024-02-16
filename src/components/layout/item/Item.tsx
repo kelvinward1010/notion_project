@@ -183,7 +183,7 @@ export const Item: React.FC<ItemProps> = ({
                                     onClick={handleExpand}
                                     role='buttton'
                                 >
-                                    {isOpen === true ? <IconChevronDown size={16} /> : <IconChevronLeft size={16} />}
+                                    {isOpen === true ? <IconChevronDown size={16} className={styles.icon_folders}/> : <IconChevronLeft size={16} className={styles.icon_folders}/>}
                                 </div>
                             )}
                             {!!id && type == 'file' && (
@@ -192,7 +192,7 @@ export const Item: React.FC<ItemProps> = ({
                                     onClick={handleExpand}
                                     role='buttton'
                                 >
-                                    <IconFile size={15} className={styles.icon_file}/>
+                                    <IconFile size={13} className={styles.icon_file}/>
                                 </div>
                             )}
                             {!isEditTitle ? (

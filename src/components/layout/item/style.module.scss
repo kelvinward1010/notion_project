@@ -16,17 +16,28 @@
             display: flex;
             align-items: center;
             justify-content: start;
+            border-bottom: 1px solid teal;
             width: 100%;
 
+            .icon_folders{
+                margin-top: 2px;
+                margin-left: -3px;
+            }
 
             .expand{
-                margin-top: 3px;
-                margin-right: -3px;
+                margin-top: 2px;
+                margin-right: -2px;
+                display: flex;
+                align-items: center;
             }
 
             .expand_file{
                 margin-top: 2px;
                 margin-right: -2px;
+
+                .icon_file{
+                    margin-right: 2px;
+                }
             }
 
             .input_edit_title{
