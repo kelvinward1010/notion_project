@@ -1,8 +1,8 @@
 .container{
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 30px);
     margin-top: 30px;
-    overflow-x: hidden;
+    overflow-y: auto;
 
     .header_doc{
         display: flex;

@@ -1,0 +1,9 @@
+.leaf {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-image: url('../../assets/leaf.png');
+    background-size: cover;
+    transition: transform 0.5s linear;
+    z-index: 99999;
+}

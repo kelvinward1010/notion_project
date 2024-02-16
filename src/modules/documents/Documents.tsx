@@ -215,7 +215,7 @@ export function Documents() {
                 </Button>
             </div>
             <div>
-                <RichTextEditor mih={200} editor={editor}>
+                <RichTextEditor mih={300} editor={editor}>
                     {editor && (
                         <BubbleMenu editor={editor}>
                             <RichTextEditor.ControlsGroup>
