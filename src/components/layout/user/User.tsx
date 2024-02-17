@@ -7,9 +7,11 @@ import { useAuth } from '../../../context/authContext';
 import { signOut } from 'firebase/auth';
 import { notifications } from '@mantine/notifications';
 import { auth } from '../../../lib/firebase';
+import { useTranslation } from 'react-i18next';
 
 export function User() {
 
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [opened, setOpened] = useState(false);
     const user = useAuth();
@@ -17,15 +19,15 @@ export function User() {
     const hanldeSignOut = () => {
         signOut(auth).then(() => {
             notifications.show({
-                title: 'User signed out',
-                message: 'User signed out',
+                title: t("notifications.signout.successTitle"),
+                message: t("notifications.signout.successSubTitle"),
                 icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
             })
             navigate('/')
         }).catch((error) => {
             notifications.show({
                 color: 'red',
-                title: 'User sign out Failed',
+                title: t("notifications.signout.errorTitle"),
                 message: error,
             })
         });

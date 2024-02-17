@@ -1,0 +1,33 @@
+{
+    "name_app": "Notion Application Web",
+    "error": {
+        "404.title": "Not Found",
+        "404.subTitle": "Sorry, the page you are looking for could not be found.",
+        "500.title": "Internal Server Error",
+        "500.subTitle": "Sorry, the page you are looking for error.",
+        "backHome": "Back to home"
+    },
+    "notifications": {
+        "register": {
+            "successTitle": "Register successfully",
+            "successSubTitle": "You're register successfully your account",
+            "errorTitle": "Register failed",
+            "errorSubTitle": "Something went wrong, please try again"
+        },
+        "login": {
+            "successTitle": "Login successfully",
+            "successSubTitle": "User signed in successfully",
+            "errorTitle": "Login failed",
+            "errorSubTitle": "Something went wrong, please try again"
+        },
+        "signout": {
+            "successTitle": "Signed out successfully",
+            "successSubTitle": "User signed out successfully",
+            "errorTitle": "User signed out failed"
+        }
+    },
+    "landing": {
+        "action_1": "Next step!",
+        "action_2": "Next to create your idea!"
+    }
+}

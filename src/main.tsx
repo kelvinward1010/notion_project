@@ -9,6 +9,7 @@ import { routerConfig } from './routers'
 import { MantineProvider } from '@mantine/core'
 import { Notifications } from '@mantine/notifications';
 import { AuthProvider } from './context/authContext';
+import "./locale/i18n";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -20,3 +21,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </MantineProvider>
   </React.StrictMode>,
 )
+
+// Reload the page when the i18n file changes
+if (import.meta.hot) {
+  import.meta.hot.accept(["./locale/i18n"], () => {});
+}

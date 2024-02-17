@@ -6,6 +6,7 @@ import { IconBrandGoogle, IconCheck, IconFaceIdError } from '@tabler/icons-react
 import { notifications } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface AuthProps {
     opened: boolean;
@@ -17,6 +18,7 @@ export const Auth: React.FC<AuthProps> = ({
     close,
 }) => {
 
+    const { t } = useTranslation();
     const [isChangeForm, setIsChangeForm] = useState(false); 
 
     const signInWithGoogle = async () => {
@@ -25,8 +27,8 @@ export const Auth: React.FC<AuthProps> = ({
             const result = await signInWithPopup(auth, provider);
             if (result.user) {
                 notifications.show({
-                    title: 'Login successfully',
-                    message: 'User signed in successfully',
+                    title: t("notifications.login.successTitle"),
+                    message: t("notifications.login.successSubTitle"),
                     icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
                 })
                 close();
@@ -34,8 +36,8 @@ export const Auth: React.FC<AuthProps> = ({
         } catch (error) {
             notifications.show({
                 color: 'red',
-                title: 'Login Failed',
-                message: 'Login failed',
+                title: t("notifications.login.errorTitle"),
+                message: t("notifications.login.errorSubTitle"),
             })
         }
     };
@@ -81,8 +83,8 @@ export const Auth: React.FC<AuthProps> = ({
             if(dataLogin.email && dataLogin.password){
                 await signInWithEmailAndPassword(auth, dataLogin.email, dataLogin.password);
                 notifications.show({
-                    title: 'Successfully login',
-                    message: 'Your data has been login successfully',
+                    title: t("notifications.login.successTitle"),
+                    message: t("notifications.login.successSubTitle"),
                     icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
                 })
                 close();
@@ -90,8 +92,8 @@ export const Auth: React.FC<AuthProps> = ({
         } catch (error) {
             notifications.show({
                 color: 'red',
-                title: 'Error logining',
-                message: 'Something went wrong! Please try again',
+                title: t("notifications.login.errorTitle"),
+                message: t("notifications.login.errorSubTitle"),
                 icon: <IconFaceIdError style={{ width: rem(18), height: rem(18) }} />,
             })
         }
@@ -102,16 +104,16 @@ export const Auth: React.FC<AuthProps> = ({
             if(dataRegister.email && dataRegister.password){
                 await createUserWithEmailAndPassword(auth, dataRegister.email, dataRegister.password);
                 notifications.show({
-                    title: 'Successfully registered',
-                    message: 'Your data has been registered successfully in the database',
+                    title: t("notifications.register.successTitle"),
+                    message: t("notifications.register.successSubTitle"),
                     icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
                 })
             }
         } catch (error) {
             notifications.show({
                 color: 'red',
-                title: 'Error registering',
-                message: 'Something went wrong! Please try again',
+                title: t("notifications.register.errorTitle"),
+                message: t("notifications.register.errorSubTitle"),
                 icon: <IconFaceIdError style={{ width: rem(18), height: rem(18) }} />,
             })
         }

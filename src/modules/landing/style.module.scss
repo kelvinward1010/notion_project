@@ -7,11 +7,23 @@
         display: flex;
         align-items: center;
         padding: 5px 10px;
+        gap: 5px;
 
         .info{
             width: fit-content;
             cursor: pointer;
             margin-right: 10px;
+        }
+
+        .languagues{
+            border: 1px solid teal;
+            padding: 4px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgb(52, 52, 52);
         }
     }
 

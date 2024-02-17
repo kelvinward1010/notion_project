@@ -1,0 +1,33 @@
+{
+    "name_app": "Ứng dụng ghi chú",
+    "error": {
+        "404.title": "Không tìm thấy",
+        "404.subTitle": "Xin lỗi, không tìm thấy trang bạn đang tìm.",
+        "500.title": "Lỗi máy chủ nội bộ",
+        "500.subTitle": "Xin lỗi, trang bạn đang tìm kiếm bị lỗi.",
+        "backHome": "Trở về trang chủ"
+    },
+    "notifications": {
+        "register": {
+            "successTitle": "Đăng ký thành công",
+            "successSubTitle": "Bạn đã đăng ký tài khoản thành công",
+            "errorTitle": "Đăng ký thất bại",
+            "errorSubTitle": "Đã xảy ra lỗi, vui lòng thử lại"
+        },
+        "login": {
+            "successTitle": "Đăng nhập thành công",
+            "successSubTitle": "Người dùng đã đăng nhập thành công",
+            "errorTitle": "Đăng nhập thất bại",
+            "errorSubTitle": "Đã xảy ra lỗi, vui lòng thử lại"
+        },
+        "signout": {
+            "successTitle": "Đăng xuất thành công",
+            "successSubTitle": "Người dùng đã đăng xuất thành công",
+            "errorTitle": "Người dùng đăng xuất không thành công"
+        }
+    },
+    "landing": {
+        "action_1": "Bước tiếp theo!",
+        "action_2": "Tiếp theo là tạo ra ý tưởng của bạn!"
+    }
+}

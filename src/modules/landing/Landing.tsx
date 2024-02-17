@@ -10,30 +10,39 @@ import { IconArrowRight, IconCheck, IconMoon, IconSun } from '@tabler/icons-reac
 import { useAuth } from '../../context/authContext';
 import { useState } from 'react';
 import { previewUrl } from '../../urls';
+import { useTranslation } from 'react-i18next';
 
 export function Landing() {
 
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [opened, { open, close }] = useDisclosure(false);
     const { colorScheme, setColorScheme } = useMantineColorScheme();
     const [opened2, setOpened2] = useState(false);
+    const user: User = useAuth();
+    const { i18n } = useTranslation();
+
+    const handleChangeLanguagues = (language: string) => {
+        i18n.changeLanguage(language);
+        i18n.reloadResources();
+    };
+    const currentLanguage = i18n.language;
 
     const toggleColorScheme = () => {
         setColorScheme(colorScheme === 'dark' ? 'light' : 'dark');
     };
-    const user: User = useAuth();
 
     const hanldeSignOut = () => {
         signOut(auth).then(() => {
             notifications.show({
-                title: 'User signed out',
-                message: 'User signed out',
+                title: t("notifications.signout.successTitle"),
+                message: t("notifications.signout.successSubTitle"),
                 icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
             })
         }).catch((error) => {
             notifications.show({
                 color: 'red',
-                title: 'User sign out Failed',
+                title: t("notifications.signout.errorTitle"),
                 message: error,
             })
         });
@@ -75,18 +84,51 @@ export function Landing() {
                         : <IconMoon />
                     }
                 </ActionIcon >
+                <Popover width={200} position="bottom" withArrow shadow="md">
+                    <Popover.Target>
+                        <div className={styles.languagues}>{currentLanguage === 'en' ? 'English': 'Vietnamese'}</div>
+                    </Popover.Target>
+                    <Popover.Dropdown>
+                        <div 
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '3px',
+                            }}
+                        >
+                            <Button 
+                                variant={'default'}
+                                onClick={() => handleChangeLanguagues('en')}
+                                style={{
+                                    background: currentLanguage === 'en' ? 'teal' : '',
+                                }}
+                            >
+                                EN
+                            </Button>
+                            <Button 
+                                variant={'default'}
+                                onClick={() => handleChangeLanguagues('vi')}
+                                style={{
+                                    background: currentLanguage === 'vi' ? 'teal' : '',
+                                }}
+                            >
+                                VI
+                            </Button>
+                        </div>
+                    </Popover.Dropdown>
+                </Popover>
             </div>
             <div className={styles.center_landing}>
-                <Title order={3}>Notion Application Web</Title>
+                <Title order={3}>{t("name_app")}</Title>
                 {user ? (
                     <>
                         <Button onClick={() => navigate(previewUrl)} className={styles.button}>
-                            Next to create your idea!
+                            {t("landing.action_2")}
                         </Button>
                     </>
                 ) : (
                     <Button onClick={open} className={styles.button}>
-                        Next step!
+                        {t("landing.action_1")}
                     </Button>
                 )}
             </div>
