@@ -13,6 +13,13 @@
             width: fit-content;
             cursor: pointer;
             margin-right: 10px;
+
+            .name{
+                width: 100px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
         }
 
         .languagues{

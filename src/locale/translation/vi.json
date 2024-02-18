@@ -28,6 +28,41 @@
     },
     "landing": {
         "action_1": "Bước tiếp theo!",
-        "action_2": "Tiếp theo là tạo ra ý tưởng của bạn!"
+        "action_2": "Tiếp theo là tạo ra ý tưởng của bạn!",
+        "logout": "Đăng xuất"
+    },
+    "auth": {
+        "label_auth": "Xác thực thông tin",
+        "signIn": {
+            "label": "Đăng nhập",
+            "labelEmail": "Email",
+            "placeholderEmail":"Email",
+            "labelPassword": "Mật khẩu",
+            "placeholderPassword":"Mật khẩu",
+            "labelButton": "Gửi"
+        },
+        "signUp": {
+            "label": "Đăng ký",
+            "labelEmail": "Email",
+            "placeholderEmail":"Email",
+            "labelPassword": "Mật khẩu",
+            "placeholderPassword":"Mật khẩu",
+            "labelConfirmPassword": "Xác nhận mật khẩu",
+            "placeholderConfirmPassword":"Xác nhận mật khẩu",
+            "labelButton": "Gửi"
+        }
+    },
+    "createpage": {
+        "label_home": "Trang chủ",
+        "label_folder": "Tạo thư mục",
+        "label_file": "Tạo tập tin"
+    },
+    "themepage":{
+        "dark": "Tối",
+        "light": "Sáng"
+    },
+    "navigation": {
+        "labelSignout": "Đăng xuất",
+        "labelTool": "Công cụ"
     }
 }

@@ -120,44 +120,48 @@ export const Auth: React.FC<AuthProps> = ({
     },[dataRegister])
 
     return (
-        <Modal className={styles.container} opened={opened} onClose={close} size="xl" title="Authentication">
+        <Modal className={styles.container} opened={opened} onClose={close} size="xl" title={t("auth.label_auth")}>
             <Container size="xxs" className={styles.center}>
                 {isChangeForm ? (
                     <Box maw={340} mx="auto" my={10}>
                         <form onSubmit={formRegister.onSubmit(hanldeRegister)}>
-                        <Text size={'xl'} c={'teal.4'} className={styles.title}>Sign Up</Text>
-                        <TextInput mt="sm" label="Email" placeholder="Email" {...formRegister.getInputProps('email')} />
+                        <Text size={'xl'} c={'teal.4'} className={styles.title}>{t("auth.signUp.label")}</Text>
+                        <TextInput mt="sm" label={t("auth.signUp.labelEmail")} placeholder={t("auth.signUp.placeholderEmail")} {...formRegister.getInputProps('email')} />
                         <PasswordInput
-                            label="Password"
-                            placeholder="Password"
+                            label={t("auth.signUp.labelPassword")}
+                            placeholder={t("auth.signUp.placeholderPassword")}
                             {...formRegister.getInputProps('password')}
                         />
 
                         <PasswordInput
                             mt="sm"
-                            label="Confirm password"
-                            placeholder="Confirm password"
+                            label={t("auth.signUp.labelConfirmPassword")}
+                            placeholder={t("auth.signUp.placeholderConfirmPassword")}
                             {...formRegister.getInputProps('confirmPassword')}
                         />
                         <Group justify="flex-end" mt="md">
                             <Text c="teal.4" style={{cursor: 'pointer'}} onClick={() => setIsChangeForm(!isChangeForm)}>You have an account!</Text>
-                            <Button type="submit">Submit</Button>
+                            <Button type="submit">
+                                {t("auth.signUp.labelButton")}
+                            </Button>
                         </Group>
                         </form>
                     </Box>
                 ):(
                     <Box maw={340} mx="auto" my={10}>
                         <form onSubmit={formLogin.onSubmit(hanldeLogin)}>
-                        <Text size={'xl'} c={'teal.4'} className={styles.title}>Sign In</Text>
-                        <TextInput mt="sm" label="Email" placeholder="Email" {...formLogin.getInputProps('email')} />
+                        <Text size={'xl'} c={'teal.4'} className={styles.title}>{t("auth.signIn.label")}</Text>
+                        <TextInput mt="sm" label={t("auth.signIn.labelEmail")} placeholder={t("auth.signIn.placeholderEmail")} {...formLogin.getInputProps('email')} />
                         <PasswordInput
-                            label="Password"
-                            placeholder="Password"
+                            label={t("auth.signIn.labelPassword")}
+                            placeholder={t("auth.signIn.placeholderPassword")}
                             {...formLogin.getInputProps('password')}
                         />
                         <Group justify="flex-end" mt="md">
                             <Text c="teal.4" style={{cursor: 'pointer'}} onClick={() => setIsChangeForm(!isChangeForm)}>You don't have an account!</Text>
-                            <Button type="submit">Submit</Button>
+                            <Button type="submit">
+                                {t("auth.signIn.labelButton")}
+                            </Button>
                         </Group>
                         </form>
                     </Box>

@@ -28,6 +28,41 @@
     },
     "landing": {
         "action_1": "Next step!",
-        "action_2": "Next to create your idea!"
+        "action_2": "Next to create your idea!",
+        "logout": "Log out"
+    },
+    "auth": {
+        "label_auth": "Authentication",
+        "signIn": {
+            "label": "Sign In",
+            "labelEmail": "Email",
+            "placeholderEmail":"Email",
+            "labelPassword": "Password",
+            "placeholderPassword":"Password",
+            "labelButton": "Submit"
+        },
+        "signUp": {
+            "label": "Sign Up",
+            "labelEmail": "Email",
+            "placeholderEmail":"Email",
+            "labelPassword": "Password",
+            "placeholderPassword":"Password",
+            "labelConfirmPassword": "Confirm password",
+            "placeholderConfirmPassword":"Confirm password",
+            "labelButton": "Submit"
+        }
+    },
+    "createpage": {
+        "label_home": "Home",
+        "label_folder": "Create folder",
+        "label_file": "Create file"
+    },
+    "themepage":{
+        "dark": "Dark",
+        "light": "Light"
+    },
+    "navigation": {
+        "labelSignout": "Sign out",
+        "labelTool": "Tools"
     }
 }

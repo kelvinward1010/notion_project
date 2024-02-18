@@ -10,12 +10,14 @@ import { ActionIcon, Text, useMantineColorScheme } from '@mantine/core';
 import { useAuth } from '../../../context/authContext';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { database } from '../../../lib/firebase';
+import { useTranslation } from 'react-i18next';
 
 export function Navigation() {
 
     const pathname = useParams();
     const isMobile = useMediaQuery("(max-width: 570px");
 
+    const { t } = useTranslation();
     const sidebarRef = useRef<ElementRef<"aside">>(null);
     const navbarRef = useRef<ElementRef<"div">>(null);
     const [,setIsResetting] = useState(false);
@@ -121,7 +123,7 @@ export function Navigation() {
                                 : <IconMoon />
                             }
                         </ActionIcon >
-                        {colorScheme == 'light' ? <Text ml={5}>Light</Text>: <Text ml={5}>Dark</Text>}
+                        {colorScheme == 'light' ? <Text ml={5}>{t('themepage.light')}</Text>: <Text ml={5}>{t('themepage.dark')}</Text>}
                     </div>
                 </div>
             </aside>

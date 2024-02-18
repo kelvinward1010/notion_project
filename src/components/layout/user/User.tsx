@@ -48,7 +48,7 @@ export function User() {
                     rightSection={<IconArrowRight size={14} />}
                     onClick={hanldeSignOut}
                 >
-                    Log out
+                    {t('navigation.labelSignout')}
                 </Button>
             </Popover.Dropdown>
         </Popover>

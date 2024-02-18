@@ -6,10 +6,12 @@ import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { database } from '../../../lib/firebase';
 import { useNavigate } from 'react-router-dom';
 import { previewUrl } from '../../../urls';
+import { useTranslation } from 'react-i18next';
 
 export const CreatePage: React.FC = () => {
 
     const user = useAuth();
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const handleCreateNewFolder = async (type: string) => {
@@ -33,9 +35,9 @@ export const CreatePage: React.FC = () => {
 
     return (
         <div className={styles.container}>
-            <Text>Tools</Text>
+            <Text>{t('navigation.labelTool')}</Text>
             <Group gap={5}>
-                <Tooltip label="Home" openDelay={500} closeDelay={100}>
+                <Tooltip label={t('createpage.label_home')} openDelay={500} closeDelay={100}>
                     <ActionIcon                    
                         variant="default"
                         size={35}
@@ -44,7 +46,7 @@ export const CreatePage: React.FC = () => {
                         <IconHome size={16}/>
                     </ActionIcon>
                 </Tooltip>
-                <Tooltip label="Create folder" openDelay={500} closeDelay={100}>
+                <Tooltip label={t('createpage.label_folder')} openDelay={500} closeDelay={100}>
                     <ActionIcon                    
                         variant="default"
                         size={35}
@@ -53,7 +55,7 @@ export const CreatePage: React.FC = () => {
                         <IconFolder size={16}/>
                     </ActionIcon>
                 </Tooltip>
-                <Tooltip label="Create file" openDelay={500} closeDelay={100}>
+                <Tooltip label={t('createpage.label_file')} openDelay={500} closeDelay={100}>
                     <ActionIcon                    
                         variant="default"
                         size={35}
