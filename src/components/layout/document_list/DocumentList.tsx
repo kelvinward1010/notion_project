@@ -1,6 +1,6 @@
-import { createTree } from '../../../oplossing';
-import { Item } from '../item/Item';
+import { createTree } from '@/utils/oplossing';
 import styles from './style.module.scss';
+import { Item } from '../item/Item';
 
 interface DocumentListProps {
     data: Array<any>;
