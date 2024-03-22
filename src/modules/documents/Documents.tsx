@@ -61,17 +61,6 @@ export function Documents() {
 
     useEffect(() => {
         const getDocumentData = async () => {
-            // if (user?.uid && idParam) {
-            //     const docRef = doc(database, "folders", user?.uid, "data", idParam);
-            //     const docSnap = await getDoc(docRef);
-    
-            //     if (docSnap.exists()) {
-            //         setData(docSnap.data());
-            //         setTitle(docSnap.data()?.title)
-            //     }else{
-            //         navigate(previewUrl)
-            //     }
-            // }
             if (user?.uid && idParam) {
                 const docRef = doc(database, "folders", user?.uid, "data", idParam);
     

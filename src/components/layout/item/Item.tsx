@@ -147,6 +147,13 @@ export const Item: React.FC<ItemProps> = ({
         }else return;
     },[user?.uid, id, form])
 
+    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            setIsEditTitle(false);
+          handleUpdateTitle();
+        }
+    };
+
     useOutsideClick(inputRef, () => {
         setIsEditTitle(false);
         handleUpdateTitle();
@@ -225,6 +232,7 @@ export const Item: React.FC<ItemProps> = ({
                                         size={'sm'}
                                         {...form.getInputProps('title')}
                                         m={'lg'}
+                                        onKeyPress={handleKeyPress}
                                     />
                                     {windowWidth < 555 && (
                                         <div
