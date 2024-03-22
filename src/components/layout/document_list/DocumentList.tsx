@@ -1,9 +1,11 @@
-import { createTree } from '@/utils/oplossing';
+
 import styles from './style.module.scss';
 import { Item } from '../item/Item';
+import { createTree } from '../../../utils/oplossing';
+import { IDocument, IDocumentList } from '../../../types/document';
 
 interface DocumentListProps {
-    data: Array<any>;
+    data: Array<IDocumentList>;
     onExpand?: () => void;
     onClick?: () => void;
     setData?: any;
@@ -14,10 +16,10 @@ export const DocumentList: React.FC<DocumentListProps> = ({
 }) => {
 
     const tree = createTree(data);
-
+    
     return (
         <div className={styles.container}>
-            {tree?.map((item) => (
+            {tree?.map((item: IDocument) => (
                 <Item
                     key={item.id}
                     id={item.id}

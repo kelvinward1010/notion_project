@@ -25,7 +25,7 @@ export function Navigation() {
     const {colorScheme, setColorScheme } = useMantineColorScheme();
     const user = useAuth();
     const [dataList, setDataList] = useState<any[]>([]);
-
+    
     const toggleColorScheme = () => {
         setColorScheme(colorScheme === 'dark' ? 'light' : 'dark');
     };

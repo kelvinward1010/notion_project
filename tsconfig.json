@@ -19,10 +19,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "baseUrl": ".", // This must be set if "paths" is set.
-    "paths": {
-      "@/*": ["src/*"] // This maps all imports starting with "@" to the "src" folder.
-    }
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
