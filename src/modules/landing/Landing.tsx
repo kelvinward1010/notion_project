@@ -46,7 +46,7 @@ export function Landing() {
                 message: error,
             })
         });
-    }
+    };
 
     return (
         <div className={styles.container}>
@@ -118,6 +118,7 @@ export function Landing() {
                     </Popover.Dropdown>
                 </Popover>
             </div>
+
             <div className={styles.center_landing}>
                 <Title order={3}>{t("name_app")}</Title>
                 {user ? (
